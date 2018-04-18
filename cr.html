@@ -1,0 +1,90 @@
+<html>
+<head>
+<title> Election Of Class Representative</title>
+<style>
+body{
+	background-color: #ff9933;
+	text-align: center;
+}
+.displaybox{
+	background-color:  #99c940;	
+	margin: auto;
+	width: 250px;
+	border: 2px solid #000000;
+	padding: 10px;
+	align: center;
+	font: 1.5em normal verdana, helvetica, arial; 
+}
+
+h1 {
+    color: blue;
+}
+</style>
+<script>
+	var ajaxobject=new XMLHttpRequest();
+	function getServerTime() {
+	  if(!ajaxobject)
+	  {
+	  	document.getElementById("showtime").innerHTML="AJAX obejct could not be created";
+	  	return;
+	  }
+	  	  ajaxobject.open("GET","listn.php");
+	  	  ajaxobject.send();
+	  	  ajaxobject.onreadystatechange=getResponse; 	
+	}
+	function getResponse(){
+		if(ajaxobject.readyState == 4 && ajaxobject.status == 200)
+		{
+			document.getElementById('showtime').innerHTML=ajaxobject.responseText;
+		}
+	}
+	var count = 0;
+	function changeColor()
+	{
+		count++;
+		var col="#2372b2";
+		if(count%3==0)
+			col="#a31a4c";
+		if(count%3==1)
+			col="#2372b2";
+		if(count%3==2)
+			col="white";
+		document.getElementById('showtime').style.backgroundColor=col;
+	}
+var str;
+	 function view()
+	{
+   		str=document.getElementById("show").innerHTML=document.getElementById("myform").elements['candidate'].value;
+		ajaxobject.open("GET","listn.php");
+	  	  ajaxobject.send();
+	  	  ajaxobject.onreadystatechange=getResponse; 
+		
+	}
+ function view1()
+	{
+   		
+		ajaxobject.open("GET","count1.php?q="+str,true);
+	  	  ajaxobject.send();
+	  	  ajaxobject.onreadystatechange=getResponse; 
+		
+	}
+</script>
+</head>
+	<body onload="">
+		
+		<b><h1>List of Candidates For The Post Of CR</h1></b>
+		<h4>Getting  The List From The Server</h4>
+			<input type="button" value="List of candidates"onclick="getServerTime()"/>
+			<input type="button" value="Change color"onclick="changeColor()"/>
+			
+		<div id="showtime" class="displaybox">
+		</div>
+		
+		<input type="button" value="Vote For" onclick="view()"/>
+		
+		<div id="show" class="displaybox">
+		</div> 
+			<input type="submit" value="Sure, Your Vote Should be Given" onclick="view1()"/>
+		
+	</body>
+</html>
